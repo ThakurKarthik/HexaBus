@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "1002390666449",
-    "firebase_url": "https://hexathon-db.firebaseio.com",
-    "project_id": "hexathon-db",
-    "storage_bucket": "hexathon-db.appspot.com"
+    "project_number": "1012990809186",
+    "firebase_url": "https://hackathon-a63af.firebaseio.com",
+    "project_id": "hackathon-a63af",
+    "storage_bucket": "hackathon-a63af.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1002390666449:android:ebd5811274baf855b099f0",
+        "mobilesdk_app_id": "1:1012990809186:android:9153898b1b10c8a2806d3b",
         "android_client_info": {
-          "package_name": "com.hexathon.hexabus"
+          "package_name": "com.hexathontraffic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1002390666449-u1h8dcip34i97286koe0hlq043dsal5h.apps.googleusercontent.com",
+          "client_id": "1012990809186-odfkkbslegjrmg72qe9d3puqct5efctj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBGcn6W3K46ap77NNp9uzFacqpeNWKKahU"
+          "current_key": "AIzaSyAke-sLonY79mk3KWi4B85RFYKGeyqETZ4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1002390666449-u1h8dcip34i97286koe0hlq043dsal5h.apps.googleusercontent.com",
+              "client_id": "1012990809186-odfkkbslegjrmg72qe9d3puqct5efctj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
