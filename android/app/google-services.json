@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1002390666449",
+    "firebase_url": "https://hexathon-db.firebaseio.com",
+    "project_id": "hexathon-db",
+    "storage_bucket": "hexathon-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002390666449:android:ebd5811274baf855b099f0",
+        "android_client_info": {
+          "package_name": "com.hexathon.hexabus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002390666449-u1h8dcip34i97286koe0hlq043dsal5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGcn6W3K46ap77NNp9uzFacqpeNWKKahU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002390666449-u1h8dcip34i97286koe0hlq043dsal5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
