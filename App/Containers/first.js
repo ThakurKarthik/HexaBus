@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, StatusBar, Text, PermissionsAndroid } from "react-native";
+import {
+  View,
+  StatusBar,
+  Text,
+  PermissionsAndroid,
+  Button
+} from "react-native";
+import { withNavigation } from "react-navigation";
 // import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from "react-redux";
 // import StartupActions from '../Redux/StartupRedux'
@@ -8,6 +15,9 @@ import RoundedButtons from "../Components/RoundedButton";
 import styles from "./Styles/firstStyles";
 import MapView, { Marker } from "react-native-maps";
 import InputPlace from "../Components/InputPlace";
+import firebase from "firebase";
+import getClosestLocation from "../Services/getClosestLocation";
+
 class First extends Component {
   state = {
     pickUpInputActive: false,
@@ -20,12 +30,28 @@ class First extends Component {
       pickUp: "",
       drop: ""
     },
-    initialRegion: null
+    initialRegion: null,
+    fireBaseLocations: [],
+    pickUpLocationIndex: null
   };
-  async componentDidMount() {
-    // this.props.startup()
+
+  componentDidMount() {
     this.requestCameraPermission();
     this.getCurrentLocation();
+    firebase.initializeApp({
+      apiKey: "AIzaSyAke-sLonY79mk3KWi4B85RFYKGeyqETZ4",
+      authDomain: "hackathon-a63af.firebaseapp.com",
+      databaseURL: "https://hackathon-a63af.firebaseio.com",
+      // projectId: "hackathon-a63af",
+      storageBucket: "hackathon-a63af.appspot.com"
+      // messagingSenderId: "sender-id",
+      // appId: "1:1012990809186:android:9153898b1b10c8a2806d3b"
+      // measurementId:''
+    });
+    // this.props.startup()
+    this.fetchCurrentLocations();
+    this.fetchRoutes();
+    this.fetchBuses();
   }
 
   requestCameraPermission = async () => {
@@ -46,6 +72,7 @@ class First extends Component {
       console.warn(err);
     }
   };
+
   async getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -64,12 +91,14 @@ class First extends Component {
       },
       {
         enableHighAccuracy: false,
-        timeout: 5000,
+        timeout: 10000,
         maximumAge: 10000
       }
     );
   }
+
   isEmpty = object => Object.keys(object).length == 0;
+
   toggleActiveInput = id => {
     const secondInput =
       id === "pickUpInputActive" ? "dropInputActive" : "pickUpInputActive";
@@ -85,15 +114,31 @@ class First extends Component {
       }));
     }
   };
+
   updateLocation = (data, extraData, pickOrDrop) => {
-    console.log("data", data, extraData, pickOrDrop);
+    console.log("data", data);
+    let min = 10000000,
+      minIndex = 0;
+    this.state.fireBaseLocations.forEach((location, index) => {
+      const distance = getClosestLocation(
+        data.lat,
+        data.lng,
+        location.latitude,
+        location.longitude
+      );
+      console.log("min", min, "distance", distance, "location", location);
+      if (distance < min) {
+        min = distance;
+        minIndex = index;
+      }
+    });
     this.setState(
       {
         location: {
           ...this.state.location,
           [pickOrDrop]: {
-            latitude: data.lat,
-            longitude: data.lng
+            latitude: this.state.fireBaseLocations[minIndex].latitude,
+            longitude: this.state.fireBaseLocations[minIndex].longitude
           }
         },
         extraData: {
@@ -106,6 +151,35 @@ class First extends Component {
       }
     );
   };
+
+  fetchCurrentLocations = async () => {
+    const locations = [];
+    const ref = firebase.database().ref("/location");
+    await ref.once("value", snapshot => {
+      snapshot.forEach(snapshotchild => {
+        let locationObject = {};
+        snapshotchild.forEach(data => {
+          locationObject[data.key] = data.val();
+        });
+        locations.push(locationObject);
+      });
+    });
+    this.setState({
+      fireBaseLocations: locations
+    });
+  };
+
+  fetchRoutes = () => {
+    console.log("fetch Routes");
+  };
+
+  seeAvailable = () => {
+    this.props.navigation.navigate("Booking", {
+      busIds: [],
+      busData: []
+    });
+  };
+
   render() {
     console.log(this.state);
     return (
@@ -143,6 +217,10 @@ class First extends Component {
               <Marker coordinate={this.state.location.drop} title="drop" />
             )}
           </MapView>
+          {!this.isEmpty(this.state.location.pickUp) &&
+            !this.isEmpty(this.state.location.drop) && (
+              <Button title="see available buses" onPress={this.seeAvailable} />
+            )}
         </View>
         {/* <Text>Hello world</Text> */}
       </View>
@@ -160,4 +238,4 @@ class First extends Component {
 //   mapDispatchToProps
 // )(First);
 
-export default First;
+export default withNavigation(First);

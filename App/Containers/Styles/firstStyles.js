@@ -25,10 +25,11 @@ export default StyleSheet.create({
   mapContainer: {
     // ...StyleSheet.absoluteFillObject,
     height: 400,
-    width: 400,
+    width: "auto",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "flex-end",
     borderWidth: 1
+    // flex: 1
   },
   mapStyles: {
     ...StyleSheet.absoluteFillObject
