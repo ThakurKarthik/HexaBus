@@ -1,36 +1,67 @@
-function parseBuses(busesDB) {
-  busesarray = [];
+/**
+ * @typedef Passenger
+ * @property {string} end  
+ * @property {number} endLocationId  
+ * @property {string} start  
+ * @property {number} startLocationId  
+ * @property {number} userId  
+
+ */
+
+/**
+ * @typedef Seat
+ * @property {string} booked
+ * @property {number} id
+ * @property {Passenger[]} passengers
+ */
+
+/**
+ * @typedef Bus
+ * @property {number} id
+ * @property {string} details
+ * @property {string} end
+ * @property {string} start
+ * @property {Seat[]} seat
+ */
+
+/**
+ *
+ * @param {Bus[]} busesDB
+ */
+export default function parseBuses(busesDB) {
+  const busesarray = [];
 
   busesDB.forEach(bus => {
-    const busDetails = [];
+    // const busDetails = {};
 
-    bus.val().forEach(busData => {
-      if (busData.key === seat) {
-        let seat = {};
-        seat.forEach(seatDetails => {
-          seadDetails.forEach(seatfulldata => {
-            if (seatfulldata.key === passengers) {
-              seatbooking = {};
-
-              passengers.forEach(passengersBookingData => {
+    let busobj = {};
+    bus.forEach(busData => {
+      if (busData.key === "seat") {
+        let seatbooking = [];
+        busData.forEach(seatDetails => {
+          let seat = {};
+          seat["passengers"] = [];
+          seatDetails.forEach(seatfulldata => {
+            if (seatfulldata.key === "passengers") {
+              seatfulldata.forEach(passengersBookingData => {
                 let bookingdata = {};
-                bookingdata[
-                  passengersBookingData.key
-                ] = passengersBookingData.val();
-                seatbooking.push(bookingdata);
+                passengersBookingData.forEach(fullData => {
+                  bookingdata[fullData.key] = fullData.val();
+                });
+                seat["passengers"].push(bookingdata);
+                console.log(seat);
               });
-
-              seatfulldata.seatbooking[se];
             } else seat[seatfulldata.key] = seatfulldata.val();
           });
+          seatbooking.push(seat);
         });
-
-        busDetails.push(seat);
+        busobj["seat"] = seatbooking;
       } else {
-        let busobj = {};
         busobj[busData.key] = busData.val();
-        busDetails.push(busobj);
       }
+      // busDetails.push(busobj);
     });
+    busesarray.push(busobj);
   });
+  return busesarray;
 }

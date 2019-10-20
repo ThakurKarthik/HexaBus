@@ -1,22 +1,15 @@
 import React, { Component } from "react";
-import {
-  View,
-  StatusBar,
-  Text,
-  PermissionsAndroid,
-  Button
-} from "react-native";
+import { View, StatusBar, PermissionsAndroid, Button } from "react-native";
 import { withNavigation } from "react-navigation";
-// import ReduxNavigation from '../Navigation/ReduxNavigation'
-import { connect } from "react-redux";
-// import StartupActions from '../Redux/StartupRedux'
-import RoundedButtons from "../Components/RoundedButton";
-// Styles
 import styles from "./Styles/firstStyles";
 import MapView, { Marker } from "react-native-maps";
 import InputPlace from "../Components/InputPlace";
 import firebase from "firebase";
 import getClosestLocation from "../Services/getClosestLocation";
+import convertRoutes from "../Services/routes";
+import covertBuses from "../Services/convertBusObject";
+import getBusesInRoutes from "../Services/getBusesInRoutes";
+import searchFirstNLastInRoutes from "../Services/searchFirstNLastInRoutes";
 
 class First extends Component {
   state = {
@@ -32,7 +25,8 @@ class First extends Component {
     },
     initialRegion: null,
     fireBaseLocations: [],
-    pickUpLocationIndex: null
+    fireBaseRoutes: [],
+    fireBaseBuses: []
   };
 
   componentDidMount() {
@@ -169,14 +163,40 @@ class First extends Component {
     });
   };
 
-  fetchRoutes = () => {
+  fetchRoutes = async () => {
     console.log("fetch Routes");
+    const ref = firebase.database().ref("/routes");
+    await ref.once("value", snapshot => {
+      this.setState({
+        fireBaseRoutes: convertRoutes(snapshot)
+      });
+    });
   };
 
+  fetchBuses = async () => {
+    console.log("fetch buses");
+    const ref = firebase.database().ref("Bus");
+    await ref.once("value", snapshot => {
+      this.setState({
+        fireBaseBuses: covertBuses(snapshot)
+      });
+    });
+  };
   seeAvailable = () => {
+    const { fireBaseRoutes, fireBaseBuses } = this.state;
+    const {
+      pickUp: firstLocationId,
+      drop: secondLocationId
+    } = this.state.location;
+    const routes = searchFirstNLastInRoutes(
+      firstLocationId,
+      secondLocationId,
+      fireBaseRoutes
+    );
+    const busIds = getBusesInRoutes(routes, fireBaseRoutes);
     this.props.navigation.navigate("Booking", {
-      busIds: [],
-      busData: []
+      busIds,
+      busData: fireBaseBuses
     });
   };
 
