@@ -70,7 +70,7 @@ const BookBusSeat =()=> {
                          <Picker.Item label="10:00-10:30 Bus3" value="10:00-10:30 Bus3" />
                 </Picker>
                 <Text style={styles.text}>{user}</Text>
-            </View>
+                </View>
                 <View style={styles.BusContainer}>
                     <View style={styles.Bus}>
                         <View style={styles.DriverSection}>

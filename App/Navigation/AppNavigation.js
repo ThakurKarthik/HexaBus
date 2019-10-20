@@ -15,7 +15,7 @@ const PrimaryNav = createStackNavigator(
   {
     // Default config for all screens
     headerMode: "none",
-    initialRouteName: "first",
+    initialRouteName: "Booking",
     navigationOptions: {
       headerStyle: styles.header
     }

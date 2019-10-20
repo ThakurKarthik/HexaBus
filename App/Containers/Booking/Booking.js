@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import {ButtonGroup} from 'react-native-elements'
 import ShowBusOptions from'./ShowBusOptions'
+import NotifyMe from './NotifyMe'
 
 
 const Booking = () => {
@@ -15,8 +16,9 @@ const Booking = () => {
             buttons={buttons}
             containerStyle={{ height: 50,marginTop:50 }}
         />
-        {(buttonIndex===0)&&
-            <ShowBusOptions />
+        {(buttonIndex===0)?
+            <ShowBusOptions />:
+            <NotifyMe />
         }
         </React.Fragment>
     )
